@@ -1,0 +1,447 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+@import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300italic,600,600italic");
+
+/*
+Colores
+#2A5E72
+#F3E9E3
+*/
+
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;    
+}
+body {
+    font-family: "Noto Sans", sans-serif;
+}
+/*Menu*/
+.header{
+    z-index: 1000;
+    background-color: #2A5E72;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    height: 80px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+}
+.nav{
+    display: flex;
+    justify-content: space-between;
+    
+}
+.nav-link{
+    color: #D7D7D7;
+    text-decoration: none;
+}
+.logo{
+    padding: 0 40px;
+    line-height: 60px;
+    margin-top: 15px;
+    margin-left: 130px;
+}
+.nav-menu{
+    display: flex;
+    margin-right: 40px;
+    list-style: none;
+}
+.nav-menu-item{
+    font-size: 18px;
+    margin: 0 10px;
+    line-height: 80px;
+    width: max-content;
+}
+.nav-menu-link{
+    padding: 8px;
+    border-radius: 3px;
+}
+.nav-menu-link:hover{
+    background-color: #fff;
+    color: #333333;
+    transition: background-color 0.5s, color 0.5s;
+}
+.nav-toggle{
+    color: white;
+    background: none;
+    border: none;
+    font-size: 30px;
+    padding: 0 20px;
+    line-height: 60px;
+    cursor: pointer;
+    display: none;
+}
+.search-container i{
+    color: white;
+    background: none;
+    border: none;
+    font-size: 30px;
+    padding: 0 20px;
+    line-height: 60px;
+    cursor: pointer;
+    display: fixed;
+}
+.header .logo {
+    cursor: pointer;
+}
+.header .logo img{
+    height: 70px;
+    width: auto;
+    transition: all 0.3s;
+}
+.header .logo img:hover{
+    transform: scale(1.2);
+}
+.search-container {
+    display: flex;
+    align-items: center;
+}
+
+.search-container input {
+    padding: 10px;
+    width: 200px; /* Ajusta el ancho según sea necesario */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.btn-search {
+    background-color: #D7D7D7;
+    color: #333333;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.btn-search:hover {
+    background-color: #77B0CC;
+    color: #fff;
+}
+@media (max-width: 768px){
+    body{
+        padding: 90px 20px 0;
+    }
+    .header{
+        height: 60px;
+    }
+    .logo{
+        padding: 0 20px;
+        line-height: 60px;
+    }
+    .nav-menu{
+        flex-direction: column;
+        margin-right: 20px;
+        background-color: #77B0CC;
+        position: fixed;
+        left: 100%;
+        top: 60px;
+        width: 100%;
+        height: calc(100% - 60px);
+        overflow-y: auto;
+        transition: left 0.3s;
+    }
+    .nav-menu-item{
+        line-height: 60px;
+    }
+    
+    .nav-menu-link:hover{
+        background: none;
+        color: #333333;
+    }
+    .nav-toggle{
+        display: block;
+    }
+    .nav-menu_visible{
+        left: 0;
+    }
+}
+
+/*Banner*/
+#banner {
+    background-color: #2c2c2c;
+    text-align: center;
+    padding: 80px 0;
+}
+.banner {
+    background: #2c2c2c;
+    height: 280px;
+    display: flex;
+    align-items: center; /* Centra verticalmente el contenido */
+    justify-content: center; /* Centra horizontalmente el contenido */
+    width: 100%;
+    position: relative;
+}
+
+.typed_wrap {
+    background-color: #ffffff;
+    border: 2px solid #000000;
+    width: 90%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 30px;
+    text-align: center; /* Centra el texto horizontalmente */
+    margin-top: 80px;
+}
+
+.typed_wrap h1 {
+    display: inline;
+}
+
+/* Add custom cursor so it auto inherits font styles */
+.typed::after {
+    content: '|';
+    display: inline;
+    -webkit-animation: blink 0.7s infinite;
+    -moz-animation: blink 0.7s infinite;
+    animation: blink 0.7s infinite;
+}
+
+/* Removes cursor that comes with typed.js */
+.typed-cursor {
+    opacity: 0;
+    display: none;
+}
+
+/* Custom cursor animation */
+@keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+@-webkit-keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+@-moz-keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+}
+/*Home*/
+
+img {
+    width: 20%;
+    height: auto;
+    display: block;
+}
+/* Secciones */
+section {
+    padding: 80px 0;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#hero {
+    background-color: #333333;
+    color: #D7D7D7;
+    padding: 100px 0;
+    display: flex;
+    justify-content: center; /* Centra horizontalmente el contenido */
+    align-items: center; /* Centra verticalmente el contenido */
+    height: 40vh; /* Establece la altura al 100% del viewport */
+}
+  #hero .container {
+    text-align: center; /* Centra el texto horizontalmente dentro del contenedor */
+  }
+#hero h2 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+#hero p {
+    font-size: 1.5em;
+    margin-bottom: 40px;
+}
+
+#hero .btn {
+    padding: 15px 30px;
+    background-color: #D7D7D7;
+    color: #333333;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 20px;
+    font-size: 1.2em;
+}
+
+#about, #enfoque, #servicios, #ayuda {
+    background-color: #fff;
+    color: #333;
+    padding: 80px 0;
+    text-align: justify; /* Justifica el texto */
+    display: flex; /* Utiliza flexbox para centrar verticalmente el contenido */
+    justify-content: center; /* Centra horizontalmente el contenido */
+    align-items: center; /* Centra verticalmente el contenido */
+  }
+  
+  #about .container,
+  #enfoque .container,
+  #servicios .container,
+  #ayuda .container {
+    max-width: 1300px; /* Ancho máximo del contenido */
+  }
+  
+  #about h2, #enfoque h4, #servicios h4, #ayuda h4 {
+    font-size: 2.5em;
+    margin-bottom: 1px;
+  }
+  
+  #about p, #enfoque p, #servicios p, #ayuda p {
+    font-size: 1.5em;
+    margin-bottom: 0px;
+  }  
+
+
+/* Imágenes en secciones */
+#enfoque img {
+    max-width: 40%;
+    height: auto;
+    float: left;
+    margin-right: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+}
+
+#ayuda img {
+    max-width: 40%;
+    height: auto;
+    float: right;
+    margin-left: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+}
+
+
+.glass-effect {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255 ,255, 255, 0));
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    -moz-backdrop-filter: blur(10px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 16px;
+}
+
+
+.img-b {
+    width: 100%;
+    height: auto;
+    max-height: 100%; 
+    object-fit: cover; 
+    opacity: 0;
+    animation: fadeIn 1.5s ease-out forwards; 
+}
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+.banner img {
+    max-width: 100%; /* Asegura que la imagen no se salga del contenedor */
+    height: auto; /* Permite que la altura se ajuste automáticamente */
+  }
+
+  .imagen-container {
+    /* Ajustar el tamaño del contenedor */
+    width: 500px; /* Por ejemplo, 300 píxeles */
+    height: auto; /* Esto mantiene la altura según el contenido */
+
+    /* Mover el contenedor */
+    margin-top: 64px; /* Mover el contenedor hacia abajo */
+    margin-right: 450px; /* Mover el contenedor hacia la derecha */
+}
+
+.imagen-grande {
+    /* Ajustar el tamaño de la imagen dentro del contenedor */
+    width: 100%; /* La imagen ocupará todo el ancho del contenedor */
+    height: auto; /* Esto mantiene la proporción de la imagen */
+}
+
+.container-img {
+    /* Ajustar el tamaño del contenedor */
+    max-width: 100%; /* Ancho deseado */
+    /*height: 500px;  Altura automática según el contenido */
+  
+    /* Mover el contenedor */
+    margin-top: 20px; /* Mover el contenedor hacia abajo */
+    /*margin-left: 380px;  Mover el contenedor hacia la derecha */
+  }
+  
+  .img-banner {
+    /* Ajustar el tamaño de la imagen dentro del contenedor */
+    width: 100%; /* La imagen ocupará todo el ancho del contenedor */
+    height: auto; /* Esto mantiene la proporción de la imagen */
+  }
+
+  .card {
+    width: 90%; /* Ancho deseado */
+    height: auto; /* Altura automática según el contenido */
+    /*margin-bottom: 20px; /* Espacio entre las tarjetas */
+    /*margin-left: 270px;*/
+    margin: 20px auto;
+    transition: transform 0.3s ease-in-out;
+    border: 2px solid #949699; /* Grosor y color del borde */
+    border-radius: 10px; /* Bordes redondos */
+    background: #949699;
+}
+
+.card:hover {
+    transform: scale(1.05); /* Escala aumentada al hacer hover */
+}
+.oculto {
+    display: none;
+}
+/* Media query para pantallas más pequeñas */
+@media (max-width: 768px) {
+    /* Ajustar estilos para pantallas más pequeñas */
+  
+    .header {
+      height: auto; /* Ajusta la altura automáticamente */
+      padding: 20px; /* Agrega un espacio interno */
+    }
+  
+    .nav {
+      flex-direction: column; /* Apila los elementos verticalmente */
+      align-items: center; /* Centra los elementos horizontalmente */
+    }
+  
+    .logo {
+      margin-left: 0; /* Elimina el margen izquierdo */
+      margin-top: 0; /* Elimina el margen superior */
+      text-align: center; /* Centra el texto */
+    }
+  
+    .nav-menu {
+      display: none; /* Oculta el menú */
+      position: absolute; /* Coloca el menú en posición absoluta */
+      top: 100%; /* Alinea el menú debajo del encabezado */
+      left: 0; /* Alinea el menú a la izquierda */
+      width: 100%; /* Ancho completo */
+      background-color: #2A5E72; /* Color de fondo del menú */
+      padding: 10px 0; /* Agrega un espacio interno al menú */
+    }
+  
+    .nav-menu_visible {
+      display: flex; /* Muestra el menú cuando está visible */
+      flex-direction: column; /* Apila los elementos verticalmente */
+    }
+  
+    .nav-menu-item {
+      margin: 10px 0; /* Agrega espacio entre los elementos del menú */
+    }
+  
+    .nav-toggle {
+      display: block; /* Muestra el botón de alternar */
+    }
+  }
+  
+  /* Media query para pantallas más pequeñas */
+  @media (max-width: 576px) {
+    /* Ajustar estilos para pantallas aún más pequeñas */
+  }
+  

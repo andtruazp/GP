@@ -1,0 +1,135 @@
+/* Estilos generales para el contenedor del mapa del sitio */
+
+/*.mapa-sitio-container {
+    max-width: 800px; /
+    margin: 0 auto; 
+  }
+  
+ 
+  .paginas-principales {
+    list-style: none; 
+    padding: 0;
+  }
+  
+  
+  .pagina-principal {
+    margin-bottom: 20px; 
+  }
+  
+
+  .pagina-principal a {
+    color: #333; 
+    text-decoration: none; 
+    display: block; 
+    padding: 8px 16px;
+    border-radius: 4px; 
+    transition: background-color 0.3s ease; 
+  }
+  
+  
+  .pagina-principal a:hover {
+    background-color: gray; 
+  }
+  
+  
+  .subpaginas {
+    padding-left: 20px; 
+  }
+  
+  
+  .subpagina {
+    margin-bottom: 10px; 
+    background-color: #666;
+  }
+  
+  
+  .subpagina a {
+    color: #666; 
+    text-decoration: none; 
+    padding-left: 2 0px;
+    display: inline-block; 
+  }
+  
+ 
+  .subpagina a:hover {
+    text-decoration: underline; 
+  }
+  
+  
+  @media screen and (max-width: 600px) {
+    .mapa-sitio-container {
+      width: 90%; 
+    }
+  }*/
+  
+  img{
+    align-self: center;
+  }
+ .mapa-sitio-container {
+   max-width: 960px;
+   margin: 0 auto;
+   padding: 2rem;
+   font-family: Arial, sans-serif;
+ }
+ 
+ .mapa-sitio-container h1 {
+   text-align: center;
+   margin-bottom: 2rem;
+ }
+ 
+ .paginas-principales {
+   list-style: none;
+   padding: 0;
+ }
+ 
+ .pagina-principal {
+   margin-bottom: 1rem;
+ }
+ 
+ .pagina-principal a {
+   display: block;
+   padding: 0.5rem 1rem;
+   background-color: #f2f2f2;
+   border-radius: 4px;
+   text-decoration: none;
+   color: #333;
+   transition: background-color 0.3s ease;
+ }
+ 
+ .pagina-principal a:hover {
+   background-color: #ddd;
+ }
+ 
+ .subpaginas {
+   margin-left: 2rem;
+   list-style: none;
+   padding: 0;
+ }
+ 
+ .subpagina {
+   margin-bottom: 0.5rem;
+ }
+ 
+ .subpagina a {
+   padding-left: 1rem;
+   background-color: transparent;
+   color: #555;
+ }
+ 
+ .subpagina a:hover {
+   background-color: #f2f2f2;
+ }
+ 
+ @media screen and (max-width: 768px) {
+   .mapa-sitio-container {
+     padding: 1rem;
+   }
+ 
+   .pagina-principal a {
+     padding: 0.25rem 0.5rem;
+   }
+ 
+   .subpagina a {
+     padding-left: 0.5rem;
+   }
+ }
