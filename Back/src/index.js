@@ -4,6 +4,7 @@ import proyectoRoutes from './routes/proyecto.routes.js'
 import actRoutes from './routes/actividad.routes.js'
 import login from './routes/login.routes.js';
 import register from './routes/register.routes.js';
+import {PORT} from './config.js'
 
 const app= express()
 
@@ -15,5 +16,5 @@ app.use(actRoutes)
 app.use(login);
 app.use(register);
 
-app.listen(3002)
+app.listen(PORT)
 console.log('Server is running on port 3002')

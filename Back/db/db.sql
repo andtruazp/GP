@@ -8,15 +8,9 @@ CREATE TABLE usuario (
     correo VARCHAR(50),
     contrasena VARCHAR(100),
     resetToken VARCHAR(255) DEFAULT NULL,
-    resetExpires DATETIME DEFAULT NULL,
-    rol INT,
-    FOREIGN KEY (rol) REFERENCES roles(id_r)
+    resetExpires DATETIME DEFAULT NULL
 );
 
-CREATE TABLE roles (
-    id_r INT PRIMARY KEY AUTO_INCREMENT,
-    rol VARCHAR(15)
-)
 
 CREATE TABLE proyecto (
 	id_p INT PRIMARY KEY AUTO_INCREMENT,
@@ -41,9 +35,3 @@ CREATE TABLE actividad (
     FOREIGN KEY (id_u) REFERENCES usuario(id_u)
 );
 
-CREATE TABLE tarea (
-    id_t INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    id_a INT NOT NULL,
-    estado BOOLEAN,
-    FOREIGN KEY (id_a) REFERENCES actividad(id_a)
-);
