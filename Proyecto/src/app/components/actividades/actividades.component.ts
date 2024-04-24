@@ -73,7 +73,7 @@ export class ActividadesComponent implements OnInit {
 
     if (!this.Datos) {
       // Redirigir al usuario a la página de error
-      this.router.navigate(['/error403']);
+      this.router.navigate(['/login']);
     }
   }
 

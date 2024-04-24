@@ -8,9 +8,35 @@ CREATE TABLE usuario (
     correo VARCHAR(50),
     contrasena VARCHAR(100),
     resetToken VARCHAR(255) DEFAULT NULL,
-    resetExpires DATETIME DEFAULT NULL
+    resetExpires DATETIME DEFAULT NULL,
+    estado_u INT DEFAULT 1,
+    #rol INT DEFAULT 3,
+    #FOREIGN KEY (rol) REFERENCES roles(id_r),
+    FOREIGN KEY (estado_u) REFERENCES estado_u(id_e)
 );
 
+CREATE TABLE estado_u (
+    id_e INT PRIMARY KEY,
+    estado VARCHAR(10)
+);
+INSERT INTO `db_tareas`.`estado_u`
+(`id_e`,
+`estado`)
+VALUES
+(1, "Activo"),
+(2, "Inactivo");
+
+CREATE TABLE roles (
+    id_r INT PRIMARY KEY AUTO_INCREMENT,
+    rol VARCHAR(15)
+);
+
+INSERT INTO `db_tareas`.`roles`
+(`rol`)
+VALUES
+("admin"), ("adminproyecto"),("normal");
+
+SELECT * FROM roles;
 
 CREATE TABLE proyecto (
 	id_p INT PRIMARY KEY AUTO_INCREMENT,
@@ -28,10 +54,23 @@ CREATE TABLE actividad (
     id_u INT,
     nom_a VARCHAR(50),
     des_a VARCHAR(100),
-    estado BOOLEAN,
+    estado INT DEFAULT 3,
     fecha_fin datetime,
     notas VARCHAR(200),
     FOREIGN KEY (id_p) REFERENCES proyecto(id_p),
-    FOREIGN KEY (id_u) REFERENCES usuario(id_u)
+    FOREIGN KEY (id_u) REFERENCES usuario(id_u),
+    FOREIGN KEY (estado) REFERENCES estado_act(id_e)
+    
 );
 
+CREATE TABLE estado_act (
+id_e INT PRIMARY KEY,
+nom_e VARCHAR(15)
+);
+INSERT INTO `db_tareas`.`estado_act`
+(`id_e`,
+`nom_e`)
+VALUES
+(1, "Terminada"),
+(2, "En Pausa"),
+(3, "Sin Finalizar");

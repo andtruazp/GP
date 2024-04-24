@@ -11,6 +11,7 @@ export class ActividadService {
 
   actividad: Actividad | undefined
   url ='http://localhost:3002/actividad/'
+  //url = 'mysql://root:dmuckBEhsWYOdIkmpaCymWAauMcFczEb@roundhouse.proxy.rlwy.net:49671/railway/actividad/'
 
   constructor(private http:HttpClient) { }
 

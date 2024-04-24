@@ -1,4 +1,5 @@
 /* Estilos del navbar */
+
 .navbar {
     margin-bottom: 0;
     background: #B5C3D5;
@@ -145,6 +146,9 @@
     overflow-x: hidden;
     margin: 0;
   }
+.all{
+  padding-top: 80px;
+}
 
   /*Buscador de Integrantes*/
 /* #ctn-bars-search {
