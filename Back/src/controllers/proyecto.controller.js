@@ -37,12 +37,12 @@ export const getProyecto = async (req,res) => {
 }
 
 export const createProyecto = async(req,res) => {
-    const { id_u, nom_p, des_p, fecha_i, fecha_f } = req.body;
-    const nuevoProyecto = { id_u, nom_p, des_p, fecha_i, fecha_f };
-
-    try {
-        const result = await pool.query('INSERT INTO proyecto SET ?', nuevoProyecto);
-        res.json({ id_p: result.insertId, ...nuevoProyecto });
+     try {
+      const nuevoVuelo = req.body
+      const[result] = await pool.query('INSERT INTO proyecto SET ?', [nuevoVuelo]);
+        const idInsertado = result.insertId;
+        res.json(idInsertado);
+        console.log('ID del nuevo registro insertado:', idInsertado);
     } catch (error) {
         console.error('Error al crear el proyecto:', error);
         res.status(500).json({ error: 'Error al crear el proyecto' });

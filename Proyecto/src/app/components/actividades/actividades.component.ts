@@ -1,3 +1,5 @@
+import { EstadosService } from './../../service/estados.service';
+import { Username } from './../../models/integrante';
 import { Usuario } from './../../models/usuario';
 import { Actividad } from './../../models/actividad';
 import { ActividadService } from './../../service/actividad.service';
@@ -6,6 +8,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { IntegrantesService } from 'src/app/service/integrantes.service';
 
 @Component({
   selector: 'app-actividades',
@@ -25,13 +28,17 @@ export class ActividadesComponent implements OnInit {
   id: number| null
   Datosusuario: any;
   Datos: any;
+  usuario: Username[]=[];
+  
 
   constructor(
     private actividadService: ActividadService,
     private fb: FormBuilder,
     private aRoute: ActivatedRoute,
     private router: Router,
-    private location: Location
+    private location: Location,
+    private integranteService: IntegrantesService
+    
   ) {
     this.actForm = this.fb.group({
       id: [''],
@@ -39,8 +46,8 @@ export class ActividadesComponent implements OnInit {
       id_u:[''],
       nom_a: ['', Validators.required],
       des_a: ['', Validators.required],
-      estado: [0],
-      fecha_fin: [null],
+      estado: [3],
+      fecha_fin: ['', [Validators.required, this.fechaValidaValidator]],
       notas: [''], 
     });
     this.id = null;
@@ -57,6 +64,7 @@ export class ActividadesComponent implements OnInit {
     if (this.id) {
       this.getAct(this.id);
     }
+    
     }
 
     console.log("id: ",this.id)
@@ -75,6 +83,21 @@ export class ActividadesComponent implements OnInit {
       // Redirigir al usuario a la página de error
       this.router.navigate(['/login']);
     }
+
+    this.equipo()
+  }
+
+  fechaValidaValidator() {
+    return (control: { value: string | number | Date; }) => {
+      const fechaIngresada = new Date(control.value);
+      const fechaActual = new Date();
+  
+      if (fechaIngresada < fechaActual) {
+        return { fechaInvalida: true };
+      }
+  
+      return null; // La fecha es válida
+    };
   }
 
   getAct(id: number): void {
@@ -84,12 +107,14 @@ export class ActividadesComponent implements OnInit {
           const actd = act[0]; // Accede al primer elemento del array
           this.act = act;
           console.log(actd);
+          const fechaFin = new Date(actd.fecha_fin);
+          const fechaFinFormateada = fechaFin.toLocaleDateString('es-ES', { year: 'numeric', month: '2-digit', day: '2-digit' }).split('/').reverse().join('-');
           this.actForm.patchValue({
-            id_u: actd.id_u,
+            id_u: actd.usuario,
             nom_a: actd.nom_a,
             des_a: actd.des_a,
             estado: actd.estado,
-            fecha_fin: actd.fecha_fin,
+            fecha_fin: fechaFinFormateada,
             notas: actd.notas,
           });
         }
@@ -117,22 +142,9 @@ export class ActividadesComponent implements OnInit {
     }
     
   }
+ 
 
-  
-  searchUser(): void {
-    try{
-      this.actividadService.getU().subscribe((integrantes: Usuario[]) => {
-        this.integrantes = integrantes;
-        console.log("integrantes listos")
-        console.log(integrantes)
-      });
-    }catch{
-      console.log('error al obtener usuarios')
-    }
-  }
-  
-
-  crearAct(){
+  /*crearAct(){
     const actData = this.actForm.value;
     
     if(this.id !== null && this.id !== 0){
@@ -167,7 +179,58 @@ export class ActividadesComponent implements OnInit {
       } 
     } 
     this.location.back();
+  }*/
+  crearAct() {
+    const actData = this.actForm.value;
+    console.log(actData)
+    // Obtener el usuario seleccionado del formulario
+    const selectedUser = this.usuario.find(user => user.usuario === actData.id_u);
+    console.log(selectedUser)
+  
+    // Verificar si se encontró un usuario seleccionado
+    if (selectedUser) {
+      // Obtener el id del usuario seleccionado
+      const userId = selectedUser.id_u;
+  
+      if (this.id !== null && this.id !== 0) {
+        // Actualizar la actividad
+        this.actividadService.updateAct(this.id, { ...actData, id_u: userId }).subscribe(
+          act => {
+            console.log('Actividad Actualizada:', act);
+            alert('Se actualizó la actividad');
+          },
+          error => {
+            console.error('Error al actualizar la actividad:', error);
+            alert('¡Hubo un error al actualizar la actividad!');
+          }
+        );
+      } else {
+        if (this.actForm.valid) {
+          // Asignar el id del usuario seleccionado al campo id_u de actData
+          actData.id_u = userId;
+          actData.id_p = this.id_p;
+          // Crear la actividad
+          this.actividadService.crearAct(actData).subscribe(
+            response => {
+              console.log('Actividad Creada:', response);
+              alert('¡Se creó la actividad exitosamente!');
+            },
+            error => {
+              console.error('Error al crear la actividad:', error);
+              alert('¡Hubo un error al crear la actividad!');
+            }
+          );
+        }
+      }
+    } else {
+      // Si no se seleccionó ningún usuario, mostrar un mensaje de error
+      alert('Por favor selecciona un usuario para realizar la actividad.');
+    }
+  
+    // Regresar a la página anterior después de crear o actualizar la actividad
+    this.location.back();
   }
+  
 
   eliminar(id: any) {
     this.actividadService.eliminar(id).subscribe(
@@ -185,5 +248,19 @@ export class ActividadesComponent implements OnInit {
   irAtras(): void {
     this.location.back();
   }
+
+  equipo(): any[]{
+    try{
+      this.integranteService.getIntegrantes(this.id_p).subscribe(usuario =>{
+        this.usuario=usuario;
+        console.log(this.usuario)
+      })
+    }catch (error){
+      console.error('Error', error);
+    }
+    return this.usuario
+  }
+
+  
 
 }

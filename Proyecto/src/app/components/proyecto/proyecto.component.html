@@ -1,10 +1,11 @@
-<!-- nvbar inicio-->
+<div class="all">
+  <!-- nvbar inicio-->
 <app-header></app-header>
 <!-- nvbar fin-->
 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="breadcrumbs">
   <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="/">Home</a></li>
-    <li class="breadcrumb-item"><a href="#" (click)="irAtras()">Proyecto</a></li>
+    <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+    <li class="breadcrumb-item"><a href="#" (click)="irAtras()">Mis Proyectos</a></li>
     <li class="breadcrumb-item active" aria-current="page">Proyecto</li>
   </ol>
 </nav>
@@ -41,9 +42,47 @@
           </div>
         </div>
         <button [disabled]="disableInputs" type="submit" class="btn btn-primary mb-3">Guardar</button>
-        <button [disabled]="disableInputs" class="btn btn-primary btn-block"
-          [routerLink]="['/actividades', { id_p: id_p }]">Agregar Actividades</button>
+        
       </form>
+      <div class="form-group">
+        <label for="nombreProyecto">Añadir integrantes</label>
+        <input type="text" class="form-control" #userSearch placeholder="Ingresa el nombre del usuario" [(ngModel)]="searchTerm">
+        <table *ngIf="integrantes.length > 0">
+          <thead>
+            <tr>
+              <th>Nombre de usuario</th>
+              <th>Añadir</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let integrante of integrantes">
+              <td>{{ integrante.usuario }}</td>
+              <td><button class="btn btn-primary" (click)="addUser(integrante.id_u)">Añadir</button></td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <div class="table-responsive" *ngIf="usuario.length > 0">
+          <table class="table">
+              <thead>
+                  <tr>
+                      <th>Integrantes Añadidos</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr *ngFor="let usuario of usuario">
+                      <td>{{ usuario.usuario }}</td>
+                      <td>
+                          <!-- Botón Eliminar -->
+                          <button class="btn btn-light" [disabled]="disableInputs" (click)="eliminarI(usuario.id_u)">Eliminar</button>
+                      </td>
+                  </tr>
+              </tbody>
+          </table>
+      </div>
+      </div>
+      <button [disabled]="disableInputs" class="btn btn-primary btn-block"
+        [routerLink]="['/actividades', { id_p: id_p }]">Agregar Actividades</button>
     </div>
   </div>
   <div class="mt-5 card">
@@ -78,4 +117,5 @@
       </div>
     </div>
   </div>
+</div>
 </div>

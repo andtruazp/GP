@@ -72,3 +72,6 @@ table {
   .breadcrumb-item.active {
     color: #000; /* Color del texto activo */
   }
+  .all{
+    padding-top: 80px;
+  }

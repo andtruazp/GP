@@ -4,7 +4,7 @@ export const getAct = async (req,res) => {
     const idp = req.params.id;
     try {
         const results = await pool.query(
-            'SELECT a.id_a, a.id_p, a.id_u, a.nom_a, a.des_a, a.estado, a.notas, u.usuario FROM actividad as a INNER JOIN usuario as u ON a.id_u=u.id_u WHERE id_a = ?', [idp]);
+            'SELECT a.id_a, a.id_p, a.id_u, a.nom_a, a.des_a, a.estado, a.notas, a.fecha_fin, u.usuario FROM actividad as a INNER JOIN usuario as u ON a.id_u=u.id_u WHERE id_a = ?', [idp]);
         if (results.length === 0) {
         res.status(404).json({ error: 'No hay Actividades' });
         } else {
@@ -93,33 +93,3 @@ export const deleteAct = async (req,res) => {
     }
 }
 
-export const getUserId = async (res) => {
-    try {
-        const results = await pool.query('SELECT id_u, usuario, correo FROM usuario');
-        
-        console.log('Resultados de la consulta:', results); // Registra los resultados en la consola para depuración
-
-        if (results.length === 0) {
-            res.status(404).json({ error: 'Usuario no encontrado' });
-        } else {
-            res.json(results[0]);
-        }
-    } catch (error) {
-        console.error('Error al obtener el usuario:', error);
-        res.status(500).json({ error: 'Error al obtener el usuario' });
-    }
-}
-
-export const verUser = async (req,res) => {
-    try {
-        const results = await pool.query('SELECT id_u, usuario FROM usuario',);
-        if (results.length === 0) {
-        res.status(404).json({ error: 'No hay Actividades' });
-        } else {
-        res.json(results[0]);
-        }
-    } catch (error) {
-        console.error('Error al obtener las Actividades:', error);
-        res.status(500).json({ error: 'Error al obtener las actividades' });
-    }
-}

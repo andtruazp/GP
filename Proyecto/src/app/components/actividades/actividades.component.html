@@ -4,7 +4,7 @@
 <div class="all">
     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="breadcrumbs">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
             <li class="breadcrumb-item"><a href="/proyecto">Proyecto</a></li>
             <li class="breadcrumb-item active" aria-current="page">Actividad</li>
         </ol>
@@ -19,42 +19,34 @@
                     <input type="text" class="form-control" id="nombreActividad" name="nombreActividad"
                         formControlName="nom_a" required>
                 </div>
-    
+
                 <div class="form-group">
                     <label for="descripcionActividad">Descripción Detallada de la Actividad:</label>
                     <textarea class="form-control" id="descripcionActividad" name="descripcionActividad"
                         formControlName="des_a" rows="4" required></textarea>
                 </div>
-    
+
                 <div class="form-group">
-                    <label for="miembrosEquipo">Quien la realiza:</label>
-                    <!--<input type="text" class="form-control" id="miembrosEquipo" name="miembrosEquipo" formControlName="id_u" required>
-                    <ul id="" *ngIf="integrantes.length > 0">
-                        <li *ngFor="let integrante of integrantes"><a href="#" (click)="seleccionarIntegrante(integrante)">{{integrante.usuario}}</a></li>
-                    </ul>
-                          
-                    <div id="cover-ctn-search"></div>-->
-                    <label for="browser" class="form-label">ingresa el id del usuario</label>
-                    <input class="form-control" id="miembrosEquipo" name="miembrosEquipo" formControlName="id_u" required>
-                    <!--<datalist id="browsers" >
-                    <ng-container *ngFor="let integrante of integrantes">
-                        <option [value]="integrante.id_u">{{ integrante.usuario }}</option>
-                     </ng-container>
-                            </datalist>-->
+                    <label for="miembrosEquipo">Quien lo realiza:</label>
+                    <label for="browser" class="form-label">Ingresa el nombre del usuario</label>
+                    <input class="form-control" list="browsers" name="browser" id="id_u" formControlName="id_u">
+                    <datalist id="browsers">
+                        <option *ngFor="let user of usuario" [value]="user.usuario">{{ user.usuario }}</option>
+                    </datalist>
                 </div>
                 <div class="form-group">
                     <label for="notas">Notas:</label>
                     <input type="text" class="form-control" id="notas" name="notas" formControlName="notas">
                 </div>
-    
-                <div class="form-group">
-                    <label for="estado">Estado:</label>
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" id="estado" name="estado" formControlName="estado">
-                        <label class="form-check-label" for="estado">Finalizada</label>
+
+                <div class="form-group col-md-6">
+                    <label for="fecha_fin">Fecha de Fin:</label>
+                    <input type="date" class="form-control" id="fecha_fin" formControlName="fecha_fin" required>
+                    <div *ngIf="actForm!.get('fecha_fin')!.hasError('fechaInvalida')">
+                      La fecha ingresada no puede ser anterior a la fecha actual.
                     </div>
-                </div>
-    
+                  </div>
+
                 <button type="submit" class="btn btn-primary btn-block">Guardar</button>
             </div>
         </form>

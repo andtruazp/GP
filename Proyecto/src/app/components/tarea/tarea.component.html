@@ -1,4 +1,5 @@
-
+<div class="all">
+    
 
 <body>
     <!-- nvbar inicio-->  
@@ -34,10 +35,9 @@
 
                 <div class="form-group">
                     <label for="estado">Estado:</label>
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" id="estado" name="estado" formControlName="estado">
-                        <label class="form-check-label" for="estado">Finalizada</label>
-                    </div>
+                    <select class="form-select" name="estado" formControlName="estado">
+                        <option *ngFor="let estado of estados" [value]="estado.id_e">{{ estado.nom_e }}</option>
+                    </select>
                 </div>
 
                 <button type="submit" class="btn btn-primary btn-block">Guardar</button>
@@ -49,3 +49,5 @@
     </div>
 </body>
 
+
+</div>

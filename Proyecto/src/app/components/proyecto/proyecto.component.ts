@@ -1,30 +1,42 @@
+import { Username, Integrante } from './../../models/integrante';
+import { IntegrantesService } from './../../service/integrantes.service';
 import { Proyecto } from './../../models/proyecto';
 import { ProyectoService } from './../../service/proyecto.service';
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { Actividad } from 'src/app/models/actividad';
 import { ActividadService } from 'src/app/service/actividad.service';
 import { Location } from '@angular/common';
+import { debounceTime, distinct, filter, map, switchMap, tap, Subscription, fromEvent } from 'rxjs';
 
 @Component({
   selector: 'app-proyecto',
   templateUrl: './proyecto.component.html',
   styleUrls: ['./proyecto.component.css']
 })
-export class ProyectoComponent implements OnInit {
+export class ProyectoComponent implements OnInit, OnDestroy {
+  @ViewChild('userSearch', {static : true}) userSearch!: ElementRef
   proyecto: Proyecto[] = [];
   proyectod: any[]=[];
   proyectoForm: FormGroup;
   act: any[] = [];
   actForm: FormGroup;
-  usuario: any;
+  usuario: any[]=[];
   id_u: number| null
   id_p: number| null
   Datosusuario: any;
   Datos: any;
   disableInputs: boolean = false;
+  integrantes: Username[]=[]
+  nuevoIntegrante: Integrante = {
+    id_p: 0, 
+    id_u: 0   
+  };
+  usuariosAdd: any []=[]
+  searchSubscription!: Subscription
+  searchTerm: string = '';
 
   constructor(
     private proyectoService: ProyectoService,
@@ -33,7 +45,8 @@ export class ProyectoComponent implements OnInit {
     private fba: FormBuilder,
     private aRoute: ActivatedRoute,
     private router: Router,
-    private location: Location
+    private location: Location,
+    private integranteService: IntegrantesService
   ) {
     this.proyectoForm = this.fb.group({
       nom_p: ['', Validators.required],
@@ -77,6 +90,26 @@ export class ProyectoComponent implements OnInit {
       this.getProyectoId(this.id_p);
       this.getMisAct(this.id_p);
     } 
+
+    this.searchSubscription=fromEvent<Event>(this.userSearch.nativeElement, 'keyup').pipe(
+      map((event: Event) =>{
+        const searchTerm = (event.target as HTMLInputElement).value;
+        return searchTerm
+      }),
+      filter((searchTerm: string) => searchTerm.length > 3),
+      debounceTime(500),
+      distinct(),
+      switchMap((searchTerm: string)=> this.integranteService.getUsers(searchTerm))
+    ).subscribe((integrantes: Username[])=> {
+      this.integrantes = integrantes !== undefined ? integrantes : [];
+      //this.participantes= this.integrantes[0];
+      console.log(this.integrantes)
+    })
+    this.equipo()
+  }
+
+  ngOnDestroy(): void {
+    this.searchSubscription.unsubscribe()
     
   }
   fechaValidaValidator() {
@@ -91,7 +124,7 @@ export class ProyectoComponent implements OnInit {
       return null; // La fecha es válida
     };
   }
-  
+ 
   getProyectoId(id: number): void {
     this.proyectoService.getProyecto(id).subscribe(
       (proyecto) => {
@@ -100,9 +133,9 @@ export class ProyectoComponent implements OnInit {
           this.proyecto = proyecto;
           console.log(primerProyecto);
           const fechaInicio = new Date(primerProyecto.fecha_i);
-        const fechaFin = new Date(primerProyecto.fecha_f);
-        const fechaInicioFormateada = fechaInicio.toLocaleDateString('es-ES', { year: 'numeric', month: '2-digit', day: '2-digit' }).split('/').reverse().join('-');
-        const fechaFinFormateada = fechaFin.toLocaleDateString('es-ES', { year: 'numeric', month: '2-digit', day: '2-digit' }).split('/').reverse().join('-');
+          const fechaFin = new Date(primerProyecto.fecha_f);
+          const fechaInicioFormateada = fechaInicio.toLocaleDateString('es-ES', { year: 'numeric', month: '2-digit', day: '2-digit' }).split('/').reverse().join('-');
+          const fechaFinFormateada = fechaFin.toLocaleDateString('es-ES', { year: 'numeric', month: '2-digit', day: '2-digit' }).split('/').reverse().join('-');
           this.proyectoForm.patchValue({
             nom_p: primerProyecto.nom_p,
             des_p: primerProyecto.des_p,
@@ -137,6 +170,7 @@ export class ProyectoComponent implements OnInit {
           (response) => {
             console.log('Solicitud POST exitosa', response);
             alert('¡El proyecto se ha creado correctamente!');
+            this.id_p = response;
           },
           (error) => {
             console.error('Error en la solicitud POST', error);
@@ -201,6 +235,71 @@ export class ProyectoComponent implements OnInit {
   esUsuarioUno(): boolean {
     return this.id_u === 1;
   }
+
+  equipo(): any[]{
+    try{
+      this.integranteService.getIntegrantes(this.id_p).subscribe(usuario =>{
+        this.usuario=usuario;
+        console.log(this.usuario)
+      })
+    }catch (error){
+      console.error('Error', error);
+    }
+    return this.usuario
+  }
+
+  
+  addUser(id: number) {
+    this.nuevoIntegrante.id_u = id;
+    this.nuevoIntegrante.id_p = this.id_p!; 
+
+    console.log(this.nuevoIntegrante);
+    const equipoCompleto = this.equipo();
+    
+    // Verificar si el nuevo integrante ya existe en el equipo
+    const integranteExistente = equipoCompleto.some(integrante => 
+        integrante.id_u === this.nuevoIntegrante.id_u 
+    );
+
+    if (integranteExistente) {
+        alert('El integrante ya existe en el equipo.');
+        return;
+    }
+
+    // Si el integrante no existe, proceder con la solicitud POST
+    this.integranteService.addIntegrantes(this.nuevoIntegrante).subscribe(
+        (response) => {
+            console.log('Solicitud POST exitosa', response);
+            alert('¡Se agregó un nuevo colaborador!');
+            this.equipo()
+        },
+        (error) => {
+            console.error('Error en la solicitud POST', error);
+            alert('¡Hubo un error al agregar al usuario!');
+        }
+    );
+
+    this.searchTerm = '';
+    this.integrantes = [];
+    this.equipo()
+    
+}
+
+eliminarI(id_u: number) {
+  this.integranteService.eliminarI(this.id_p!, id_u).subscribe(
+    (response) => {
+      console.log('Integrante eliminado:', response);
+      alert('Se eliminó al colaborador');
+      this.equipo();
+    },
+    (error) => {
+      console.error('Error al eliminar al colaborador:', error);
+      alert('¡Hubo un error al eliminar al colaborador!');
+    }
+  );
+}
+
+  
 
   
 }

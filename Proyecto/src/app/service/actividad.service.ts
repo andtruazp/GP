@@ -39,7 +39,5 @@ export class ActividadService {
     return this.http.delete(`${this.url}${id}`)
   }
 
-  public getU(): Observable <any>{
-    return this.http.get<any>(`${this.url}getu`)
-  }
+  
 }

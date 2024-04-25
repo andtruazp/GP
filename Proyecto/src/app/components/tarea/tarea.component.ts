@@ -4,6 +4,7 @@ import { ActividadService } from './../../service/actividad.service';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
+import { EstadosService } from 'src/app/service/estados.service';
 
 @Component({
   selector: 'app-tarea',
@@ -18,11 +19,14 @@ export class TareaComponent implements OnInit{
   id: number| null
   Datosusuario: any;
   Datos: any;
+  estados: any[]=[];
+
     constructor(
     private actividadService: ActividadService,
     private fb: FormBuilder,
     private aRoute: ActivatedRoute,
     private router: Router,
+    private estadosService: EstadosService
   ){
     this.actForm = this.fb.group({
       id: [''],
@@ -30,7 +34,7 @@ export class TareaComponent implements OnInit{
       id_u:[''],
       nom_a: [''],
       des_a: [''],
-      estado: [false, Validators.required],
+      estado: [3, Validators.required],
       fecha_fin: [null],
       notas: [''], 
     });
@@ -55,6 +59,8 @@ export class TareaComponent implements OnInit{
     this.Datosusuario = sessionStorage.getItem('userData');
     this.id_u = primerUsuario.id_u;
     console.log(this.id_u)
+
+    this.getEstados();
 
 
   }
@@ -93,6 +99,19 @@ terminar(){
     alert('¡Hubo un error!');
   }
 );
+}
+getEstados(){
+  try{
+    this.estadosService.getEstados().subscribe(estados => {
+      this.estados = estados;
+      console.log('los valores son',this.estados)
+    },
+    error => {
+      console.error('Error al obtener datos:', error);
+    } )
+  }catch{
+    console.log('no existe');
+  }
 }
 
 
