@@ -5,7 +5,8 @@
     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="breadcrumbs">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">Inicio</a></li>
-            <li class="breadcrumb-item"><a href="/proyecto">Proyecto</a></li>
+            <li class="breadcrumb-item"><a href="/homeuser">Mis Proyectos</a></li>
+            <li class="breadcrumb-item"><a [routerLink]="['/proyecto', id_p]">Proyecto</a></li>
             <li class="breadcrumb-item active" aria-current="page">Actividad</li>
         </ol>
     </nav>

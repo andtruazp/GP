@@ -15,7 +15,7 @@ export class HomeuserComponent implements OnInit {
   Datosusuario: any;
   Datos: any;
   proyectos: any[] = []; // Arreglo para almacenar los proyectos
-  act: any[]=[];
+  act: Actividad[]=[];
 
   constructor(private http: HttpClient, 
     private router: Router,

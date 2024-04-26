@@ -63,6 +63,10 @@ export class ActividadesComponent implements OnInit {
       this.id = Number(this.aRoute.snapshot.paramMap.get('id'));
     if (this.id) {
       this.getAct(this.id);
+      //this.get_idp(this.id);
+      if(this.id_p){
+        this.equipo()
+      }
     }
     
     }
@@ -100,16 +104,33 @@ export class ActividadesComponent implements OnInit {
     };
   }
 
+  get_idp (id: number) {
+    this.actividadService.getAct(id).subscribe(
+      (act) => {
+        
+          const actd = act[0]; // Accede al primer elemento del array
+          this.id_p = actd.id_p;
+          console.log("act.id_p en metodo get_idp",this.id_p);  
+          //this.equipoA(this.id_p)       
+        
+      },
+      (error) => {
+        console.error('Error al obtener la actividad:', error);
+      }
+    );
+  }
+
   getAct(id: number): void {
     this.actividadService.getAct(id).subscribe(
       (act) => {
         if(act && act.length > 0){ // Verifica si act es un array y tiene al menos un elemento
           const actd = act[0]; // Accede al primer elemento del array
-          this.act = act;
+          this.act = act[0];
           console.log(actd);
           const fechaFin = new Date(actd.fecha_fin);
           const fechaFinFormateada = fechaFin.toLocaleDateString('es-ES', { year: 'numeric', month: '2-digit', day: '2-digit' }).split('/').reverse().join('-');
           this.actForm.patchValue({
+            id_p: actd.id_p,
             id_u: actd.usuario,
             nom_a: actd.nom_a,
             des_a: actd.des_a,
@@ -188,12 +209,13 @@ export class ActividadesComponent implements OnInit {
     console.log(selectedUser)
   
     // Verificar si se encontró un usuario seleccionado
-    if (selectedUser) {
+    
       // Obtener el id del usuario seleccionado
-      const userId = selectedUser.id_u;
+      const userId = selectedUser?.id_u;
   
       if (this.id !== null && this.id !== 0) {
         // Actualizar la actividad
+        //actData.id_p = this.id_p;
         this.actividadService.updateAct(this.id, { ...actData, id_u: userId }).subscribe(
           act => {
             console.log('Actividad Actualizada:', act);
@@ -221,14 +243,11 @@ export class ActividadesComponent implements OnInit {
             }
           );
         }
-      }
-    } else {
-      // Si no se seleccionó ningún usuario, mostrar un mensaje de error
-      alert('Por favor selecciona un usuario para realizar la actividad.');
-    }
+      } //this.router.navigate(['/proyecto/',this.id_p]);
+    
   
     // Regresar a la página anterior después de crear o actualizar la actividad
-    this.location.back();
+    
   }
   
 
@@ -246,19 +265,36 @@ export class ActividadesComponent implements OnInit {
   }
 
   irAtras(): void {
-    this.location.back();
+    //this.location.back();
+    this.router.navigate(['/proyecto/',this.id_p]);
   }
 
   equipo(): any[]{
-    try{
-      this.integranteService.getIntegrantes(this.id_p).subscribe(usuario =>{
-        this.usuario=usuario;
-        console.log(this.usuario)
-      })
-    }catch (error){
-      console.error('Error', error);
+    if (this.id_p) {
+      try {
+        this.integranteService.getIntegrantes(this.id_p).subscribe(usuario => {
+          this.usuario = usuario;
+          console.log(this.usuario)
+        })
+      } catch (error) {
+        console.error('Error', error);
+      }
     }
-    return this.usuario
+    return this.usuario;
+  }
+
+  equipoA(id: number): any[]{
+    if (id) {
+      try {
+        this.integranteService.getIntegrantes(this.id).subscribe(usuario => {
+          this.usuario = usuario;
+          console.log(this.usuario)
+        })
+      } catch (error) {
+        console.error('Error', error);
+      }
+    }
+    return this.usuario;
   }
 
   

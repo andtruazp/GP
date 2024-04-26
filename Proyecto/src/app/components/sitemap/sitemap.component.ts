@@ -24,10 +24,7 @@ export class SitemapComponent implements OnInit{
   constructor(private http: HttpClient){}
 
   ngOnInit(): void {
-    this.http.get<any>('../../../assets/estructura-sitio.json').subscribe(data => {
-      this.estructuraSitio = data;
-      console.log(this.estructuraSitio)
-    });
+    
     
   }
 

@@ -41,11 +41,18 @@ export class HeaderComponent implements AfterViewInit, OnInit {
   ngOnInit(): void {
     this.Datosusuario = sessionStorage.getItem('userData');
     this.Datos = JSON.parse(this.Datosusuario);
-    const primerUsuario = this.Datos[0];
+    if(this.Datos){
+      const primerUsuario = this.Datos[0];
     console.log(this.Datos)
     this.id = primerUsuario.id_u;
     this.nombreUsuario = primerUsuario.usuario;
     console.log(this.nombreUsuario)
+    }else{
+      this.id = 1
+    }
+    
+
+    console.log(this.id)
 
     
     this.actualizarTextoEnlace();

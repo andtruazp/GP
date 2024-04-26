@@ -35,7 +35,7 @@ export class TareaComponent implements OnInit{
       nom_a: [''],
       des_a: [''],
       estado: [3, Validators.required],
-      fecha_fin: [null],
+      fecha_fin: ['',[Validators.required, this.fechaValidaValidator()]],
       notas: [''], 
     });
     this.id = null
@@ -65,6 +65,19 @@ export class TareaComponent implements OnInit{
 
   }
 
+  fechaValidaValidator() {
+    return (control: { value: string | number | Date; }) => {
+      const fechaIngresada = new Date(control.value);
+      const fechaActual = new Date();
+  
+      if (fechaIngresada < fechaActual) {
+        return { fechaInvalida: true };
+      }
+  
+      return null; // La fecha es válida
+    };
+  }
+
   getAct(id: number): void {
     this.actividadService.getAct(id).subscribe(
       (act) => {
@@ -72,12 +85,14 @@ export class TareaComponent implements OnInit{
           const actd = act[0]; // Accede al primer elemento del array
           this.act = act;
           console.log(actd);
+          const fechaFin = new Date(actd.fecha_fin);
+          const fechaFinFormateada = fechaFin.toLocaleDateString('es-ES', { year: 'numeric', month: '2-digit', day: '2-digit' }).split('/').reverse().join('-');
           this.actForm.patchValue({
             id_u: actd.id_u,
             nom_a: actd.nom_a,
             des_a: actd.des_a,
             estado: actd.estado,
-            fecha_fin: actd.fecha_fin,
+            fecha_fin: fechaFinFormateada,
             notas: actd.notas,
           });
         }

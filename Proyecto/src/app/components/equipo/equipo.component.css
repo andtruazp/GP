@@ -48,4 +48,41 @@
   input[type="submit"]:hover {
     background-color: #000000;
   }
+  .breadcrumbs {
+    background-color: transparent;
+  }
+  
+  .breadcrumb {
+    color: black;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+  }
+  .breadcrumb-item a {
+    color: black;
+    background-color: transparent;
+  
+  }
+  .breadcrumb-item {
+    list-style-type: none;
+    display: inline-flex;
+    align-items: center;
+    margin-bottom: 0;
+    
+  }
+  
+  .breadcrumb-item + .breadcrumb-item::before {
+    content: '\00BB'; /* Puedes cambiar esto al símbolo que desees */
+    margin: 0 5px;
+  }
+  
+  .breadcrumb-item.active {
+    color: #000; /* Color del texto activo */
+  }
+
+  .all{
+    padding-top: 10%;
+  }
   

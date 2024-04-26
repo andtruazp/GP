@@ -19,7 +19,9 @@ export const getAct = async (req,res) => {
 export const verActP = async (req,res) => {
     const idp = req.params.id;
     try {
-        const results = await pool.query('SELECT a.id_a, a.id_p, a.id_u, a.nom_a, a.des_a, a.estado, a.notas, u.usuario FROM actividad as a INNER JOIN usuario as u ON a.id_u=u.id_u WHERE id_p = ?', [idp]);
+        const results = await pool.query(
+            'SELECT a.id_a, a.id_p, a.id_u, a.nom_a, a.des_a, a.estado, a.notas, a.fecha_fin, u.usuario, e.nom_e FROM actividad AS a INNER JOIN usuario AS u ON a.id_u = u.id_u INNER JOIN estado_act AS e ON a.estado = e.id_e WHERE id_p = ? ORDER BY a.fecha_fin', 
+            [idp]);
         if (results.length === 0) {
         res.status(404).json({ error: 'No hay Actividades' });
         } else {
@@ -34,7 +36,9 @@ export const verActP = async (req,res) => {
 export const verMisAct = async (req,res) => {
     const id = req.params.id;
     try {
-        const results = await pool.query('SELECT * FROM actividad WHERE id_u = ?', [id]);
+        const results = await pool.query(
+            'SELECT a.id_a, a.id_p, a.id_u, a.nom_a, a.des_a, a.estado, a.notas, a.fecha_fin, u.usuario, e.nom_e FROM actividad AS a INNER JOIN usuario AS u ON a.id_u = u.id_u INNER JOIN estado_act AS e ON a.estado = e.id_e WHERE a.id_u = ? ORDER BY a.fecha_fin', 
+            [id]);
         if (results.length === 0) {
         res.status(404).json({ error: 'No hay Actividades' });
         } else {
@@ -61,8 +65,8 @@ export const createAct = async (req,res) => {
 
 export const updateAct = async (req,res) =>{
     const idA = req.params.id;
-    const { id_p, id_u, nom_a, des_a, estado, fecha_fin, notas } = req.body;
-    const actividadActualizada = { id_p, id_u, nom_a, des_a, estado, fecha_fin, notas };
+    const { id_u, nom_a, des_a, estado, fecha_fin, notas } = req.body;
+    const actividadActualizada = { id_u, nom_a, des_a, estado, fecha_fin, notas };
 
     try {
     const result = await pool.query('UPDATE actividad SET ? WHERE id_a = ?', [actividadActualizada, idA]);

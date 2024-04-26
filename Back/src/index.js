@@ -6,6 +6,7 @@ import login from './routes/login.routes.js';
 import register from './routes/register.routes.js';
 import integrantes from './routes/integrantes.routes.js'
 import estado from './routes/cat.routes.js'
+import usuarios from './routes/usuarios.routes.js'
 import {PORT} from './config.js'
 
 const app= express()
@@ -19,6 +20,7 @@ app.use(login);
 app.use(register);
 app.use(integrantes);
 app.use(estado)
+app.use(usuarios);
 
 app.listen(PORT)
 console.log('Server is running on port 3002')

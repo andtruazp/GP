@@ -5,8 +5,15 @@
 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="breadcrumbs">
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="/">Inicio</a></li>
-    <li class="breadcrumb-item"><a href="#" (click)="irAtras()">Mis Proyectos</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Proyecto</li>
+    <li class="breadcrumb-item"><a href="#" (click)="irAtras()">{{ id_u === 1 ? 'Proyectos' : 'Mis Proyectos' }}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">
+      <ng-container *ngIf="proyecto && proyecto.length > 0">
+        {{ proyecto[0]?.nom_p }}
+      </ng-container>
+      <ng-container *ngIf="!(proyecto && proyecto.length > 0)">
+        <a>Crear Proyecto</a>
+      </ng-container>
+    </li>
   </ol>
 </nav>
 <div class="container mt-5">
@@ -41,12 +48,12 @@
             </div>
           </div>
         </div>
-        <button [disabled]="disableInputs" type="submit" class="btn btn-primary mb-3">Guardar</button>
+        <button *ngIf="id_u !== 1" [disabled]="disableInputs" type="submit" class="btn btn-primary mb-3">Guardar</button>
         
       </form>
       <div class="form-group">
         <label for="nombreProyecto">Añadir integrantes</label>
-        <input type="text" class="form-control" #userSearch placeholder="Ingresa el nombre del usuario" [(ngModel)]="searchTerm">
+        <input type="text" class="form-control" [disabled]="disableInputs" #userSearch placeholder="Ingresa el nombre del usuario" [(ngModel)]="searchTerm">
         <table *ngIf="integrantes.length > 0">
           <thead>
             <tr>
@@ -74,14 +81,14 @@
                       <td>{{ usuario.usuario }}</td>
                       <td>
                           <!-- Botón Eliminar -->
-                          <button class="btn btn-light" [disabled]="disableInputs" (click)="eliminarI(usuario.id_u)">Eliminar</button>
+                          <button class="btn btn-secondary" *ngIf="id_u !== 1" [disabled]="disableInputs" (click)="eliminarI(usuario.id_u)">Eliminar</button>
                       </td>
                   </tr>
               </tbody>
           </table>
       </div>
       </div>
-      <button [disabled]="disableInputs" class="btn btn-primary btn-block"
+      <button *ngIf="id_u !== 1" [disabled]="disableInputs" class="btn btn-primary btn-block"
         [routerLink]="['/actividades', { id_p: id_p }]">Agregar Actividades</button>
     </div>
   </div>
@@ -96,6 +103,8 @@
               <th>Actividad</th>
               <th>Descripción</th>
               <th>Asignado</th>
+              <th>Estado</th>
+              <th>Fecha termino</th>
               <th>Acciones</th>
             </tr>
           </thead>
@@ -104,12 +113,14 @@
               <td>{{act.nom_a}}</td>
               <td>{{act.des_a}}</td>
               <td>{{act.usuario}}</td>
+              <td>{{act.nom_e}}</td>
+              <td>{{act.fecha_fin | date:'dd/MM/yyyy'}}</td>
               <td>
                 <!-- Botón Editar -->
-                <button class="btn btn-secondary" [disabled]="disableInputs" [routerLink]="['/actividades', act.id_a]"
-                  (click)="openForEdit(act)">Editar</button>
+                <!--<button class="btn btn-secondary" *ngIf="id_u !== 1" [disabled]="disableInputs" [routerLink]="['/actividades', act.id_a,{ id_p: id_p }]"
+                  (click)="openForEdit(act)">Editar</button>-->
                 <!-- Botón Eliminar -->
-                <button class="btn btn-light" [disabled]="disableInputs" (click)="eliminar(act.id_a)">Eliminar</button>
+                <button class="btn btn-secondary" *ngIf="id_u !== 1" [disabled]="disableInputs" (click)="eliminar(act.id_a)">Eliminar</button>
               </td>
             </tr>
           </tbody>

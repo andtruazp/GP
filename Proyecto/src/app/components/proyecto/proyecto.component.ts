@@ -229,7 +229,13 @@ export class ProyectoComponent implements OnInit, OnDestroy {
   }
 
   irAtras(): void {
-    this.location.back();
+    //this.location.back();
+    if (this.id_u === 1) {
+      this.router.navigate(['/equipo']); // Si id_u es igual a 1, navega a '/equipo'
+    } else {
+      this.router.navigate(['/homeuser']); // Si id_u es diferente de 1, navega a '/homeuser'
+    }
+  
   }
 
   esUsuarioUno(): boolean {
